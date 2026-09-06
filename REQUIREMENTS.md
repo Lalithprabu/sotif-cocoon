@@ -109,3 +109,32 @@ distance jump check against `last_accepted_distance_m`.
 
 **Verification:** `test_ring3.py`, test case "Good then implausible distance 
 jump - should hold last good state".
+
+
+---
+
+## REQ-SOTIF-007: Persistent Decision Logging
+
+**Statement:** The system shall record every frame-level safety decision to 
+a persistent, timestamped log file, distinguishing normal operation from 
+degraded or safe-stop events by severity level.
+
+**Rationale:** Runtime safety decisions must be auditable after the fact — 
+for incident investigation, regulatory review, or engineering analysis — 
+not just visible transiently during execution.
+
+**Implementation:** `logger_config.py` (logging configuration), used by 
+`main_integration_test.py` via `logger.info()` for normal operation and 
+`logger.warning()` for degraded/safe-stop events.
+
+**Verification:** Manual inspection of `sotif_cocoon.log` after running 
+`main_integration_test.py`, confirming timestamped INFO/WARNING entries 
+matching each frame's Ring3 status. [Note: not yet covered by an automated 
+test — see Known Gaps.]
+
+---
+
+## Known Gaps
+
+- REQ-SOTIF-007 (logging) is currently verified by manual inspection only, 
+  not an automated test.
