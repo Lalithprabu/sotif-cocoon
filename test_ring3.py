@@ -1,5 +1,5 @@
-from ring2_plausibility import check_plausibility
-from ring3_arbiter import arbitrate, reset_state
+from ring2_plausibility import check_plausibility, reset_state as reset_ring2_state
+from ring3_arbiter import arbitrate, reset_state as reset_ring3_state
 
 sequence_test_cases = [
     {
@@ -43,7 +43,8 @@ sequence_test_cases = [
 
 def run_tests():
     for case in sequence_test_cases:
-        reset_state()
+        reset_ring2_state()
+        reset_ring3_state()
         print(f"--- {case['name']} ---")
         for i, frame in enumerate(case["frames"], start=1):
             is_plausible, reason = check_plausibility(frame["detection"])
