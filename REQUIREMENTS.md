@@ -89,3 +89,23 @@ incorrect or misleading safety decisions.
 
 **Verification:** `test_ring3.py`, `run_tests()` calls `reset_state()` 
 before each independent test case.
+
+---
+
+## REQ-SOTIF-006: Motion Continuity Check
+
+**Statement:** The system shall reject a detection if its reported distance 
+changes by more than 5 meters compared to the immediately preceding accepted 
+detection.
+
+**Rationale:** A detection can appear individually plausible (valid confidence, 
+valid distance range) while still being physically impossible in context — 
+e.g. an object appearing to instantaneously jump position between frames. 
+This indicates a perception fault (e.g. misassociation between frames, or 
+a false detection) that single-frame checks cannot catch.
+
+**Implementation:** `ring2_plausibility.py`, function `check_plausibility()`, 
+distance jump check against `last_accepted_distance_m`.
+
+**Verification:** `test_ring3.py`, test case "Good then implausible distance 
+jump - should hold last good state".
