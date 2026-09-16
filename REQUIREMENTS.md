@@ -134,7 +134,38 @@ test — see Known Gaps.]
 
 ---
 
+
+---
+
+## REQ-SOTIF-008: Real AI Model Validation
+
+**Statement:** The system shall demonstrate correct plausibility rejection 
+and safe-state arbitration when interfacing with a genuine pretrained 
+object-detection model (YOLOv8n), including under deliberately degraded 
+sensing conditions.
+
+**Rationale:** Rule-based checks validated against synthetic/hand-crafted 
+data do not prove the architecture holds up against real AI model output, 
+which has genuine statistical uncertainty and failure modes that synthetic 
+test data cannot fully represent.
+
+**Implementation:** `ring1_perception_real.py` (real YOLO-based perception), 
+`main_integration_real.py` (real-data integration pipeline), 
+`create_degraded_image.py` (deliberate degradation to provoke low-confidence 
+detection).
+
+**Verification:** Manual run of `main_integration_real.py` against 
+`images/bus.jpg` (clean image, confirmed NORMAL_OPERATION) and 
+`images/bus_degraded.jpg` (degraded image, confirmed model misclassification 
+with confidence 0.29, correctly rejected by Ring2, correctly triggering 
+SAFE_STOP_REQUEST_TAKEOVER via Ring3). [Note: manual verification only, 
+not yet an automated test - see Known Gaps.]
+
+---
+
 ## Known Gaps
 
 - REQ-SOTIF-007 (logging) is currently verified by manual inspection only, 
   not an automated test.
+- REQ-SOTIF-008 (real AI model validation) is currently verified by manual 
+  run and inspection only, not an automated test.
