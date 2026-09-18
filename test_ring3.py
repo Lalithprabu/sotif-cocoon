@@ -3,8 +3,12 @@ from ring3_arbiter import arbitrate, reset_state as reset_ring3_state
 
 sequence_test_cases = [
     {
-        "name": "Single frame - good detection",
+        "name": "Three sustained good frames - should reach NORMAL_OPERATION",
         "frames": [
+            {"detection": {"object": "pedestrian", "distance_m": 12.5, "confidence": 0.91},
+             "expected_status": "SAFE_STOP_REQUEST_TAKEOVER"},
+            {"detection": {"object": "pedestrian", "distance_m": 12.5, "confidence": 0.91},
+             "expected_status": "SAFE_STOP_REQUEST_TAKEOVER"},
             {"detection": {"object": "pedestrian", "distance_m": 12.5, "confidence": 0.91},
              "expected_status": "NORMAL_OPERATION"}
         ]
@@ -31,11 +35,30 @@ sequence_test_cases = [
         ]
     },
     {
-        "name": "Good then bad confidence - should hold last good state",
+        "name": "Sustained good, then one bad frame - should NOT instantly recover on next good frame",
         "frames": [
+            {"detection": {"object": "pedestrian", "distance_m": 12.5, "confidence": 0.91},
+             "expected_status": "SAFE_STOP_REQUEST_TAKEOVER"},
+            {"detection": {"object": "pedestrian", "distance_m": 12.5, "confidence": 0.91},
+             "expected_status": "SAFE_STOP_REQUEST_TAKEOVER"},
             {"detection": {"object": "pedestrian", "distance_m": 12.5, "confidence": 0.91},
              "expected_status": "NORMAL_OPERATION"},
             {"detection": {"object": "pedestrian", "distance_m": 12.5, "confidence": 0.2},
+             "expected_status": "DEGRADED_HOLD_LAST_GOOD"},
+            {"detection": {"object": "pedestrian", "distance_m": 12.5, "confidence": 0.91},
+             "expected_status": "DEGRADED_HOLD_LAST_GOOD"}
+        ]
+    },
+    {
+        "name": "Good then implausible distance jump - should hold last good state",
+        "frames": [
+            {"detection": {"object": "pedestrian", "distance_m": 12.5, "confidence": 0.91},
+             "expected_status": "SAFE_STOP_REQUEST_TAKEOVER"},
+            {"detection": {"object": "pedestrian", "distance_m": 12.5, "confidence": 0.91},
+             "expected_status": "SAFE_STOP_REQUEST_TAKEOVER"},
+            {"detection": {"object": "pedestrian", "distance_m": 12.5, "confidence": 0.91},
+             "expected_status": "NORMAL_OPERATION"},
+            {"detection": {"object": "pedestrian", "distance_m": 60.0, "confidence": 0.91},
              "expected_status": "DEGRADED_HOLD_LAST_GOOD"}
         ]
     }

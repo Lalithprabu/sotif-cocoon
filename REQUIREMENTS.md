@@ -162,6 +162,29 @@ SAFE_STOP_REQUEST_TAKEOVER via Ring3). [Note: manual verification only,
 not yet an automated test - see Known Gaps.]
 
 ---
+---
+
+## REQ-SOTIF-009: Temporal Trust Score with Hysteresis
+
+**Statement:** The system shall maintain a temporal trust score for perception 
+output, incrementing on plausible detections and decrementing more sharply on 
+implausible detections, such that recovery to NORMAL_OPERATION requires 
+sustained plausible detections rather than a single good frame.
+
+**Rationale:** Instantaneous recovery on a single good frame after a fault 
+sequence risks reacting to a transient fluke rather than genuine sensor/model 
+recovery. This mirrors hysteresis and debounce filtering techniques used in 
+automotive sensor signal processing, where rapid state oscillation (e.g. a 
+warning light flickering near a threshold) is explicitly avoided by requiring 
+sustained evidence before switching state.
+
+**Implementation:** `ring3_arbiter.py`, trust score logic in `arbitrate()`.
+
+**Verification:** `test_ring3.py`, new test cases covering: (a) single good 
+frame after a fault sequence does not immediately restore NORMAL_OPERATION, 
+(b) sustained good frames do eventually restore it.
+
+---
 
 ## Known Gaps
 
