@@ -30,5 +30,6 @@ def run_real_pipeline_sequence(image_paths):
         print(message)
 
 if __name__ == "__main__":
-    sequence = ["images/bus.jpg", "images/bus.jpg", "images/bus.jpg"]
+    import glob
+    sequence = sorted(glob.glob("images/video_frames/*.jpg"))
     run_real_pipeline_sequence(sequence)

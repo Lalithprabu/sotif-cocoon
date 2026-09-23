@@ -3,3 +3,7 @@ __pycache__/
 .vscode/
 *.log
 *.pt
+images/video_frames/
+images/video_frames_with_fault/
+videos/*.mov
+!videos/Lavendar_London.mp4
