@@ -161,6 +161,13 @@ with confidence 0.29, correctly rejected by Ring2, correctly triggering
 SAFE_STOP_REQUEST_TAKEOVER via Ring3). [Note: manual verification only, 
 not yet an automated test - see Known Gaps.]
 
+**Update (post REQ-SOTIF-009):** Following introduction of the temporal 
+trust score, single-frame real AI validation now correctly reports 
+SAFE_STOP_REQUEST_TAKEOVER rather than NORMAL_OPERATION, since trust has 
+not yet accumulated. A 3-frame repeated-image sequence was used to confirm 
+NORMAL_OPERATION is still reachable once sustained plausible detections 
+occur (see `main_integration_real.py`, `run_real_pipeline_sequence()`).
+
 ---
 ---
 
