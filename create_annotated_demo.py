@@ -12,7 +12,7 @@ model = YOLO("yolov8n.pt")
 reset_ring2_state()
 reset_ring3_state()
 
-frame_paths = sorted(glob.glob("images/video_frames/*.jpg"))
+frame_paths = sorted(glob.glob("images/video_frames_with_fault/*.jpg"))
 annotated_frames = []
 
 for frame_number, frame_path in enumerate(frame_paths, start=1):
@@ -43,9 +43,10 @@ for frame_number, frame_path in enumerate(frame_paths, start=1):
 
 # Write annotated frames out as a video
 height, width, _ = annotated_frames[0].shape
-out = cv2.VideoWriter("images/cocoon_demo.mp4", cv2.VideoWriter_fourcc(*"mp4v"), 2, (width, height))
+out = cv2.VideoWriter("images/cocoon_demo_with_fault.mp4", cv2.VideoWriter_fourcc(*"mp4v"), 4, (width, height))
+# out = cv2.VideoWriter("images/cocoon_demo_with_fault.mp4", cv2.VideoWriter_fourcc(*"avc1"), 4, (width, height))
 for frame in annotated_frames:
     out.write(frame)
 out.release()
 
-print(f"Saved annotated demo video with {len(annotated_frames)} frames to images/cocoon_demo.mp4")
+print(f"Saved annotated demo video with {len(annotated_frames)} frames to images/cocoon_demo_with_fault.mp4")

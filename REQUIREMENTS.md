@@ -193,9 +193,40 @@ frame after a fault sequence does not immediately restore NORMAL_OPERATION,
 
 ---
 
+---
+
+## REQ-SOTIF-010: Fault Injection Validation on Real Video
+
+**Statement:** The system shall demonstrate correct hysteresis-based 
+degradation and recovery when a genuine transient sensing fault (simulated 
+via localized blur/downscaling) is injected into a contiguous segment of 
+an otherwise clean, self-recorded real-world video sequence.
+
+**Rationale:** Static image tests (REQ-SOTIF-008) validate single-frame 
+model behavior, but do not exercise the temporal trust-score logic 
+(REQ-SOTIF-009) against a real, continuous sequence. This test closes 
+that gap using genuinely original footage with a deliberately controlled, 
+reproducible fault window.
+
+**Implementation:** `create_video_frames.py` (frame extraction), 
+`inject_fault_into_sequence.py` (deliberate fault injection into frames 
+20-29 of a 52-frame sequence), `create_annotated_demo.py` (visual 
+demonstration with on-screen Ring2/Ring3 status overlay).
+
+**Verification:** Manual review of `images/cocoon_demo_with_fault.mp4`, 
+confirming NORMAL_OPERATION during clean frames, degradation to 
+SAFE_STOP_REQUEST_TAKEOVER/DEGRADED_HOLD_LAST_GOOD during the injected 
+fault window (frames 20-29), and recovery to NORMAL_OPERATION once 
+sustained clean frames resume. [Note: manual verification only, not yet 
+an automated test - see Known Gaps.]
+
+---
+
 ## Known Gaps
 
 - REQ-SOTIF-007 (logging) is currently verified by manual inspection only, 
   not an automated test.
 - REQ-SOTIF-008 (real AI model validation) is currently verified by manual 
   run and inspection only, not an automated test.
+- REQ-SOTIF-010 (fault injection on real video) is currently verified by 
+  manual video review only, not an automated test.
